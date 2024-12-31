@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventify</title>
+    <!-- Link para o Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <script src="https://kit.fontawesome.com/f3c9a01420.js" crossorigin="anonymous"></script>
+    <script src="../src/js/sidebar.js"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <!-- Sidebar para dispositivos móveis -->
+    <div class="transition-all duration-300 ease-in-out fixed top-0 abolsute -left-full w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-end" id="sidebar">
+        <div class="w-1/3 h-full bg-violet-950 text-white p-4">
+            <div class="logo flex items-center justify-around text-3xl">
+                <p class="text-white poppins"><span class="font-bold">Event</span>ify</p>
+                <button onclick="closeSidebar()" class="text-white text-3xl">&times;</button>
+            </div>
+            <ul class="space-y-4 mt-8">
+                <li><a href="#" class="underline-animation roboto">Home</a></li>
+                <li><a href="#eventos" class="underline-animation roboto">Eventos</a></li>
+                <li><a href="#criar-evento" class="underline-animation roboto">Criar Evento</a></li>
+                <li><a href="#login" class="p-2 hover:underline bg-transparent border-2 border-white hover:bg-pink-400 hover:border-pink-400 text-white rounded-3xl px-4 transition ease-in-out duration-500 poppins">Login</a></li>
+            </ul>
+        </div>
+        <div class="overlay w-2/3 h-full" id="sidebar-overlay" onclick="closeSidebar()"></div>
+    </div>
+
+    <div class="bg-[#8c15f4] h-[500px] shadow-lg">
+        <div class="flex items-center justify-around pt-4">
+            <div class="logo flex items-center gap-2 text-3xl">
+                <i class="fa-solid fa-ticket text-white"></i>
+                <p class="text-white poppins"><span class="font-bold">Event</span>ify</p>
+            </div>
+            <div class="links">
+                <ul class="space-x-4 text-white font-bold hidden md:flex">
+                    <li><a href="#" class="underline-animation roboto">Home</a></li>
+                    <li><a href="#eventos" class="underline-animation roboto">Eventos</a></li>
+                    <li><a href="#criar-evento" class="underline-animation roboto">Criar Evento</a></li>
+                    <li><a href="#login"
+                            class="p-2 hover:underline bg-transparent border-2 border-white hover:bg-pink-400 hover:border-pink-400 text-white rounded-3xl px-4 transition ease-in-out duration-500 poppins">Login</a>
+                    </li>
+                </ul>
+                <button onclick="openSidebar()" class="md:hidden text-white text-3xl">☰</button>
+            </div>
+        </div>
+        <div class="relative top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+            <h1 class="text-4xl font-bold text-white mb-4 poppins">Transforme sua Experiência em Eventos!</h1>
+            <p class="text-xl text-white roboto w-[70%] mx-auto">Descubra, participe e crie eventos incríveis com Eventify. A melhor
+                plataforma para você!</p>
+        </div>
+    </div>
+
+
+    <div
+        class="-mt-[75px] w-[80%] h-[150px] mx-auto bg-violet-950 rounded-xl shadow-lg flex justify-around items-center px-4">
+        <!-- Campo: Nome do Evento -->
+        <div class="flex flex-col w-1/3">
+            <label for="event-name" class="roboto text-white font-semibold text-xl mb-1">Nome do evento</label>
+            <div class="relative">
+                <input type="text" oninput="searchEvent()" id="event-name" placeholder="Digite algo..."
+                    class="w-full bg-transparent border-b-2 border-gray-400 text-white text-lg focus:outline-none focus:border-blue-500 placeholder-transparent" />
+            </div>
+        </div>
+
+        <!-- Campo: Estado -->
+        <div class="flex flex-col w-1/4 relative">
+            <label for="event-uf" class="roboto text-white font-semibold text-xl mb-1">Estado</label>
+            <div class="relative">
+                <!-- Dropdown 1: Estado -->
+                <div
+                    class="relative bg-transparent border-b-2 border-gray-400 text-white text-lg focus-within:border-blue-500">
+                    <button class="w-full text-left focus:outline-none flex justify-between items-center"
+                        id="dropdownButton1" onclick="toggleDropdown('dropdownMenu1')">
+                        <span id="selectedState">Selecione um estado</span>
+                        <i class="fa-solid fa-caret-down text-white"></i>
+                    </button>
+                </div>
+                <ul id="dropdownMenu1"
+                    class="absolute w-64 bg-violet-950 text-white rounded-lg shadow-md mt-2 hidden max-h-64 overflow-y-auto">
+                    <!-- Os estados serão preenchidos via JS -->
+                </ul>
+            </div>
+        </div>
+
+        <!-- Campo: Cidade -->
+        <div class="flex flex-col w-1/4 relative">
+            <label for="event-city" class="roboto text-white font-semibold text-xl mb-1">Cidade</label>
+            <div class="relative">
+                <!-- Dropdown 2: Cidade -->
+                <div
+                    class="relative bg-transparent border-b-2 border-gray-400 text-white text-lg focus-within:border-blue-500">
+                    <button class="w-full text-left focus:outline-none flex justify-between items-center"
+                        id="dropdownButton2" onclick="toggleDropdown('dropdownMenu2')" disabled>
+                        <span id="selectedCity">Selecione uma cidade</span>
+                        <i class="fa-solid fa-caret-down text-white"></i>
+                    </button>
+                </div>
+                <ul id="dropdownMenu2"
+                    class="absolute w-64 bg-violet-950 text-white rounded-lg shadow-md mt-2 hidden max-h-64 overflow-y-auto">
+                    <!-- As opções de cidades serão inseridas via JS -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seção de Próximos Eventos -->
+    <section id="proximos-eventos" class="bg-gray-100 py-16 px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8 text-center poppins">Próximos Eventos</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Evento 1 -->
+                <div class="bg-gray-100 rounded-lg shadow-lg overflow-hidden">
+                    <img src="https://via.placeholder.com/400x200" alt="Evento 1" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-2xl font-semibold text-violet-950 poppins">Evento Incrível</h3>
+                        <p class="text-gray-600 roboto mt-2">Data: 25/01/2024</p>
+                        <p class="text-gray-600 roboto">Local: São Paulo, SP</p>
+                        <button
+                            class="mt-4 px-6 py-2 bg-violet-950 text-white rounded-lg hover:bg-violet-800 transition duration-300">
+                            Saiba Mais
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Os eventos são inseridos via JS -->
+            </div>
+            
+            <div class="text-center mt-10 hidden bg-violet-950 rounded-lg w-1/2 mx-auto p-2" id="event-alert">
+                <p class="text-2xl text-white">Para ver mais eventos, vá para a página <a href="#" class="text-pink-500 hover:text-blue-700 transition duration-300">Eventos</a>!</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="relative justify-around bg-purple-100 rounded-xl shadow-lg overflow-visible mt-16 hidden md:flex">
+        <!-- Imagem -->
+        <div class="absolute -top-9 left-24">
+            <img src="../src/img/3dAvatars.png" alt="Ilustração" class="w-[450px] h-auto">
+        </div>
+
+        <!-- Conteúdo -->
+        <div class="flex items-center ml-[300px] p-8">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-800 poppins mb-4">Faça seu própio evento!</h2>
+                <p class="text-gray-600 roboto mb-6">Gerencie inscrições e participantes facilmente.</p>
+                <button
+                    class="px-6 py-3 bg-pink-500 text-white rounded-full poppins font-semibold shadow-md hover:bg-pink-600 transition ease-in-out duration-300">
+                    Criar Eventos
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-gray-900 text-white py-10 px-8">
+        <div class="container mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+            <!-- Sobre -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Sobre o Eventify</h3>
+                <p class="text-sm">
+                    Eventify é uma plataforma self-service global que permite criar, compartilhar, descobrir e
+                    participar de eventos que conectam pessoas e inspiram vidas.
+                </p>
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-white">
+                        <i class="fab fa-facebook text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-white">
+                        <i class="fab fa-twitter text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-white">
+                        <i class="fab fa-linkedin text-2xl"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- Planeje Eventos -->
+            <div class="hidden md:block">
+                <h3 class="text-lg font-bold mb-4">Planeje Eventos</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Crie e Configure</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Venda Ingressos</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">RSVP Online</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Eventos Online</a></li>
+                </ul>
+            </div>
+            <!-- Links Úteis -->
+            <div class="hidden md:block">
+                <h3 class="text-lg font-bold mb-4">Eventify</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Sobre Nós</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Imprensa</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Contato</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Como Funciona</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Privacidade</a></li>
+                    <li><a href="#" class="text-sm text-gray-400 hover:text-white">Termos</a></li>
+                </ul>
+            </div>
+            <!-- Fique Informado -->
+            <div>
+                <h3 class="text-lg font-bold mb-4">Fique Informado</h3>
+                <p class="text-sm text-gray-400 mb-4">
+                    Cadastre-se para receber as novidades sobre eventos e experiências.
+                </p>
+                <form class="flex">
+                    <input type="email" placeholder="Digite seu e-mail"
+                        class="flex-grow px-4 py-2 text-gray-900 rounded-l-lg" />
+                    <button class="bg-pink-500 text-white px-4 py-2 rounded-r-lg hover:bg-pink-600">
+                        Inscreva-se
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="text-center text-gray-500 text-sm mt-10">
+            © 2024 Eventify. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script src="../src/js/home.js"></script>
+</body>
+
+</html>
