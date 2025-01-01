@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Eventify</title>
+    <script src="https://kit.fontawesome.com/f3c9a01420.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../src/css/styles.css">
+</head>
+<body class="min-h-screen bg-gradient-to-br from-violet-200 via-violet-300 to-blue-200 flex flex-col items-center justify-center">
+    <!-- Navbar -->
+    <nav class="w-full bg-white shadow-md py-3 px-6 flex justify-between items-center fixed top-0">
+        <div class="logo flex items-center gap-2 text-3xl">
+            <i class="fa-solid fa-ticket text-violet-950"></i>
+            <p class="text-violet-950 poppins"><span class="font-bold">Event</span>ify</p>
+        </div>
+        <div class="space-x-4 poppins">
+            <a href="index.html" class="underline-animation text-gray-600 hover:text-violet-700 roboto">Home</a>
+            <a href="#" class="underline-animation text-gray-600 hover:text-violet-700 roboto">Sobre</a>
+            <a href="cadastro.html" class="underline-animation text-gray-600 hover:text-violet-700 roboto">Cadastre-se</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="mt-16 w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <div class="logo flex items-center gap-2 text-3xl justify-center mb-2">
+            <i class="fa-solid fa-ticket text-violet-950"></i>
+            <p class="text-violet-950 poppins"><span class="font-bold">Event</span>ify</p>
+        </div>
+        <h2 class="text-xl text-center text-gray-700 mb-4 roboto">Acesse sua conta</h2>
+
+        <form action="#" method="POST" class="space-y-4">
+            <div>
+                <label for="email" class="block text-gray-700 roboto mb-1">E-mail</label>
+                <input type="email" id="email" name="email" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:outline-none" />
+            </div>
+
+            <div>
+                <label for="password" class="block text-gray-700 roboto mb-1">Senha</label>
+                <input type="password" id="password" name="password" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-violet-500 focus:outline-none" />
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input type="checkbox" id="remember" name="remember"
+                        class="w-4 h-4 text-violet-600 border-gray-300 rounded focus:ring-violet-500" />
+                    <label for="remember" class="ml-2 text-gray-600 roboto">Lembrar-me</label>
+                </div>
+                <a href="#" class="text-sm text-violet-600 hover:underline roboto">Esqueceu sua senha?</a>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-violet-950 text-white py-2 px-4 rounded-lg hover:bg-violet-800 transition duration-300 font-semibold roboto">
+                Entrar
+            </button>
+
+            <p class="text-sm text-center text-gray-600 roboto mt-4">
+                Não tem uma conta? <a href="#" class="text-violet-600 hover:underline">Cadastre-se</a>
+            </p>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -28,6 +28,21 @@
     width: 100%;
   }
 
+  .active-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .active-underline::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    left: 0;
+    bottom: 0;
+    background-color: currentColor;
+    transition: width 0.5s ease;
+  }
 
 /* Para navegadores Webkit (Chrome, Safari, Edge) */
 html::-webkit-scrollbar {
