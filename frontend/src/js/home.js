@@ -113,6 +113,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         navigator.geolocation.getCurrentPosition(getLocationSuccess, getLocationError);
     } else {
         console.log("Geolocalização não é suportada por este navegador.");
+        selectCity('Todas as cidades');
+        selectState('Todos os estados');
     }
 
     function getLocationSuccess(position) {
@@ -172,46 +174,50 @@ document.addEventListener('DOMContentLoaded', async () => {
 // Função para carregar eventos da API
 async function searchEvent() {
     const nome = document.getElementById('event-name').value;
-    const estadoTexto = document.getElementById('selectedState').innerText;
-    const cidadeTexto = document.getElementById('selectedCity').innerText; 
+    const estadoTexto = document.getElementById('selectedState').innerText; 
+    const cidadeTexto = document.getElementById('selectedCity').innerText;
     let cidade = '';
     let estado = '';
+
+    // Condicional para garantir que a cidade e estado não sejam valores padrão
     if (cidadeTexto !== "Selecione uma cidade" && cidadeTexto !== "Todas as cidades") {
         cidade = cidadeTexto;
-    }   
+    }
+
     if (estadoTexto !== "Selecione um estado" && estadoTexto !== "Todos os estados") {
         estado = estadoTexto;
-    }   
+    }
+
 
     const params = new URLSearchParams({
         nome,
         estado,
         cidade
-    }).toString();  // Cria a string de parâmetros para a query
+    })
 
     try {
+        // Requisição à API
         const response = await fetch(`http://localhost:5000/api/eventos/search?${params}`);
         const events = await response.json();
         
-        // Chama a função para atualizar a UI com os novos eventos
+        // Atualizando os cards com os eventos
         updateEventsCards(events);
     } catch (error) {
         console.error('Erro ao buscar eventos:', error);
     }
 }
 
-
+// Função para atualizar os cards de eventos
 function updateEventsCards(events) {
     const eventSection = document.getElementById('proximos-eventos');
     const eventList = eventSection.querySelector('.grid');
     eventList.innerHTML = '';
 
-    // Verifica se há eventos
     if (events.length === 0) {
         eventList.innerHTML = '<p>Nenhum evento encontrado.</p>';
-        document.getElementById('event-alert').classList.add('hidden'); 
+        document.getElementById('event-alert').classList.add('hidden');
     } else {
-        // Adiciona os cards novos
+        // Adiciona até 6 eventos na tela
         events.slice(0, 6).forEach(event => {
             const eventCard = document.createElement('div');
             eventCard.classList.add('bg-gray-100', 'rounded-lg', 'shadow-lg', 'overflow-hidden');
@@ -231,9 +237,10 @@ function updateEventsCards(events) {
             `;
             eventList.appendChild(eventCard);
         });
-        document.getElementById('event-alert').classList.remove('hidden');        
+        document.getElementById('event-alert').classList.remove('hidden');
     }
 }
+
 
 function formatDate(dateString) {
     const date = new Date(dateString);

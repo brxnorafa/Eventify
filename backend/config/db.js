@@ -1,21 +1,23 @@
-const mysql = require('mysql2');
+const mysql = require('mysql2/promise'); // Usando a versão de promise do mysql2
 require('dotenv').config();
 
 // Configuração de conexão com o banco de dados MySQL local
-const connection = mysql.createConnection({
+const connection = mysql.createPool({ // Usando createPool para melhor performance
     host: process.env.MYSQL_HOST,
     user: process.env.MYSQL_USER,
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE
 });
 
-// Testando a conexão
-connection.connect((err) => {
-    if (err) {
+async function testConnection() {
+    try {
+        const [rows, fields] = await connection.execute('SELECT 1');
+        console.log('Conexão ao banco de dados bem-sucedida');
+    } catch (err) {
         console.error('Erro ao conectar ao banco de dados:', err.stack);
-        return;
     }
-    console.log('Conectado ao banco de dados com ID', connection.threadId);
-});
+}
+
+testConnection();
 
 module.exports = connection;

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - Eventify</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../src/css/styles.css">
+    <script src="https://kit.fontawesome.com/f3c9a01420.js" crossorigin="anonymous"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script defer src="../src/js/config/firebase.js"></script>
+    <script defer src="../src/js/sidebar.js"></script>
+</head>
+
+<body class="bg-gray-100 font-sans">
+
+    <!-- Navbar -->
+
+    <!-- Sidebar para dispositivos móveis -->
+    <div class="transition-all duration-300 ease-in-out fixed top-0 absolute -left-full w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-end"
+        id="sidebar">
+        <div class="w-1/3 h-full bg-violet-950 text-white p-4">
+            <div class="logo flex items-center justify-between text-3xl">
+                <p class="text-white poppins"><span class="font-bold">Event</span>ify</p>
+                <button onclick="closeSidebar()" class="text-white text-3xl">&times;</button>
+            </div>
+            <ul class="space-y-4 mt-8" id="general-links">
+                <li><a href="#" class="underline-animation roboto">Home</a></li>
+                <li><a href="#eventos" class="underline-animation roboto">Eventos</a></li>
+                <li><a href="#criar-evento" class="underline-animation roboto">Criar Evento</a></li>
+                <li id="login-link"><a href="login.html"
+                        class="p-2 hover:underline bg-transparent border-2 border-white hover:bg-pink-400 hover:border-pink-400 text-white rounded-3xl px-4 transition ease-in-out duration-500 poppins">Login</a>
+                </li>
+            </ul>
+            <div id="profile-section" class="hidden">
+                <hr class="my-4 border-gray-300">
+                <h3 class="poppins font-bold flex items-center gap-4 justify-center">Meu Perfil <i
+                        class="fa-regular fa-user text-white"></i></h3>
+                <ul class="space-y-4 mt-6">
+                    <li><a href="perfil.html" class="underline-animation roboto">Perfil</a></li>
+                    <li><a href="profile.html" class="underline-animation roboto">Meus Ingressos</a></li>
+                    <li><a href="profile.html" class="underline-animation roboto">Meus Eventos</a></li>
+                    <li><a href="#" id="logout-link"
+                            class="mt-16 py-2 bg-red-400 w-full rounded-lg text-center poppins font-bold block">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="overlay w-2/3 h-full" id="sidebar-overlay" onclick="closeSidebar()"></div>
+    </div>
+
+    <div class="bg-[#8c15f4] py-4 shadow-lg">
+        <div class="flex items-center justify-around">
+            <div class="logo flex items-center gap-2 text-3xl">
+                <i class="fa-solid fa-ticket text-white"></i>
+                <p class="text-white poppins"><span class="font-bold">Event</span>ify</p>
+            </div>
+            <div class="links">
+                <ul class="space-x-4 text-white font-bold hidden md:flex items-center">
+                    <li><a href="index.html" class="underline-animation roboto">Home</a></li>
+                    <li><a href="#eventos" class="underline-animation roboto">Eventos</a></li>
+                    <li><a href="#criar-evento" class="underline-animation roboto">Criar Evento</a></li>
+                    <li id="login-button"><a href="login.html"
+                            class="p-2 hover:underline bg-transparent border-2 border-white hover:bg-pink-400 hover:border-pink-400 text-white rounded-3xl px-4 transition ease-in-out duration-500 poppins">Login</a>
+                    </li>
+                    <li id="user-dropdown" class="relative group">
+                        <!-- Botão Meu Perfil -->
+                        <div
+                            class="text-white px-4 py-2 rounded-md focus:outline-none hover:bg-pink-400 transition duration-300 flex items-center gap-2 cursor-pointer">
+                            <i class="fa-regular fa-user text-white"></i> Meu Perfil <i
+                                class="fa-solid fa-caret-down text-white"></i>
+                        </div>
+                        <!-- Dropdown -->
+                        <div
+                            class="absolute right-0 mt-0 w-48 bg-white rounded-md shadow-lg z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300">
+                            <a href="perfil.html"
+                                class="underline-animation block px-4 py-2 text-gray-700 hover:bg-gray-100 roboto">Perfil</a>
+                            <a href="profile.html"
+                                class="underline-animation block px-4 py-2 text-gray-700 hover:bg-gray-100 roboto">Meus
+                                Ingressos</a>
+                            <a href="profile.html"
+                                class="underline-animation block px-4 py-2 text-gray-700 hover:bg-gray-100 roboto">Meus
+                                Eventos</a>
+                            <a href="#" id="logout-button"
+                                class="underline-animation block px-4 py-2 text-red-700 hover:bg-gray-100 roboto">Sair</a>
+                        </div>
+                    </li>
+
+                </ul>
+                <button onclick="openSidebar()" class="md:hidden text-white text-3xl">☰</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Perfil -->
+    <div class="container mx-auto my-24 p-6 bg-white shadow-lg rounded-lg max-w-4xl">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Meu Perfil</h1>
+        <div class="flex flex-col md:flex-row items-center gap-6">
+            <!-- Informações do perfil -->
+            <form id="profile-form" class="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
+                    <input type="text" id="name"
+                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-md p-4 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#8c15f4] focus:border-[#8c15f4]"
+                        placeholder="Seu nome">
+                </div>
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                    <input type="email" id="email" readonly disabled
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm disabled:opacity-50 disabled:bg-gray-200 disabled:cursor-not-allowed p-3"
+                        placeholder="Seu email">
+                </div>
+                <div class="mt-4">
+                    <label for="birthdate" class="block text-sm font-medium text-gray-700">Data de Nascimento</label>
+                    <input type="date" id="birthdate"
+                        class="mt-1 block w-full rounded-lg border-gray-300 shadow-md p-4 bg-white text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-[#8c15f4] focus:border-[#8c15f4]">
+                </div>
+                <div>
+                    <label for="cpf" class="block text-sm font-medium text-gray-700">CPF</label>
+                    <p class="text-sm text-red-400" id="cpf-alert">O CPF é necessário estar verificado para efetuar
+                        compras em nosso app!</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="cpf" maxlength="14"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-3 disabled:opacity-50 disabled:bg-gray-200 disabled:cursor-not-allowed"
+                            placeholder="Seu CPF">
+                        <button type="button" id="verify-cpf"
+                            class="px-4 py-3 bg-[#8c15f4] text-white rounded-md hover:bg-[#6a0cba] disabled:bg-green-500">Verificar</button>
+                    </div>
+                </div>
+
+                <div class="md:col-span-2">
+                    <button type="submit"
+                        class="w-full py-3 bg-[#8c15f4] text-white rounded-lg hover:bg-[#6a0cba] focus:ring-2 focus:ring-[#8c15f4]">
+                        Salvar Alterações
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../src/js/perfil.js"></script>
+</body>
+
+</html>

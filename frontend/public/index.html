@@ -9,24 +9,44 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="../src/css/styles.css">
     <script src="https://kit.fontawesome.com/f3c9a01420.js" crossorigin="anonymous"></script>
-    <script src="../src/js/sidebar.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script defer src="../src/js/config/firebase.js"></script>
+    <script defer src="../src/js/sidebar.js"></script>
 </head>
 
 <body class="bg-gray-100">
 
     <!-- Sidebar para dispositivos móveis -->
-    <div class="transition-all duration-300 ease-in-out fixed top-0 abolsute -left-full w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-end" id="sidebar">
+    <div class="transition-all duration-300 ease-in-out fixed top-0 absolute -left-full w-full h-full bg-black bg-opacity-50 z-50 flex items-center justify-end"
+        id="sidebar">
         <div class="w-1/3 h-full bg-violet-950 text-white p-4">
-            <div class="logo flex items-center justify-around text-3xl">
+            <div class="logo flex items-center justify-between text-3xl">
                 <p class="text-white poppins"><span class="font-bold">Event</span>ify</p>
                 <button onclick="closeSidebar()" class="text-white text-3xl">&times;</button>
             </div>
-            <ul class="space-y-4 mt-8">
+            <ul class="space-y-4 mt-8" id="general-links">
                 <li><a href="#" class="underline-animation roboto">Home</a></li>
                 <li><a href="#eventos" class="underline-animation roboto">Eventos</a></li>
                 <li><a href="#criar-evento" class="underline-animation roboto">Criar Evento</a></li>
-                <li><a href="#login" class="p-2 hover:underline bg-transparent border-2 border-white hover:bg-pink-400 hover:border-pink-400 text-white rounded-3xl px-4 transition ease-in-out duration-500 poppins">Login</a></li>
+                <li id="login-link"><a href="login.html"
+                        class="p-2 hover:underline bg-transparent border-2 border-white hover:bg-pink-400 hover:border-pink-400 text-white rounded-3xl px-4 transition ease-in-out duration-500 poppins">Login</a>
+                </li>
             </ul>
+            <div id="profile-section" class="hidden">
+                <hr class="my-4 border-gray-300">
+                <h3 class="poppins font-bold flex items-center gap-4 justify-center">Meu Perfil <i
+                        class="fa-regular fa-user text-white"></i></h3>
+                <ul class="space-y-4 mt-6">
+                    <li><a href="perfil.html" class="underline-animation roboto">Perfil</a></li>
+                    <li><a href="profile.html" class="underline-animation roboto">Meus Ingressos</a></li>
+                    <li><a href="profile.html" class="underline-animation roboto">Meus Eventos</a></li>
+                    <li><a href="#" id="logout-link"
+                            class="mt-16 py-2 bg-red-400 w-full rounded-lg text-center poppins font-bold block">Sair</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="overlay w-2/3 h-full" id="sidebar-overlay" onclick="closeSidebar()"></div>
     </div>
@@ -38,24 +58,49 @@
                 <p class="text-white poppins"><span class="font-bold">Event</span>ify</p>
             </div>
             <div class="links">
-                <ul class="space-x-4 text-white font-bold hidden md:flex">
+                <ul class="space-x-4 text-white font-bold hidden md:flex items-center">
                     <li><a href="#" class="active-underline roboto">Home</a></li>
                     <li><a href="#eventos" class="underline-animation roboto">Eventos</a></li>
                     <li><a href="#criar-evento" class="underline-animation roboto">Criar Evento</a></li>
-                    <li><a href="login.html"
+                    <li id="login-button"><a href="login.html"
                             class="p-2 hover:underline bg-transparent border-2 border-white hover:bg-pink-400 hover:border-pink-400 text-white rounded-3xl px-4 transition ease-in-out duration-500 poppins">Login</a>
                     </li>
+                    <li id="user-dropdown" class="relative group">
+                        <!-- Botão Meu Perfil -->
+                        <div
+                            class="text-white px-4 py-2 rounded-md focus:outline-none hover:bg-pink-400 transition duration-300 flex items-center gap-2 cursor-pointer">
+                            <i class="fa-regular fa-user text-white"></i> Meu Perfil <i
+                                class="fa-solid fa-caret-down text-white"></i>
+                        </div>
+                        <!-- Dropdown -->
+                        <div
+                            class="absolute right-0 mt-0 w-48 bg-white rounded-md shadow-lg z-10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-opacity duration-300">
+                            <a href="perfil.html"
+                                class="underline-animation block px-4 py-2 text-gray-700 hover:bg-gray-100 roboto">Perfil</a>
+                            <a href="profile.html"
+                                class="underline-animation block px-4 py-2 text-gray-700 hover:bg-gray-100 roboto">Meus
+                                Ingressos</a>
+                            <a href="profile.html"
+                                class="underline-animation block px-4 py-2 text-gray-700 hover:bg-gray-100 roboto">Meus
+                                Eventos</a>
+                            <a href="#" id="logout-button"
+                                class="underline-animation block px-4 py-2 text-red-700 hover:bg-gray-100 roboto">Sair</a>
+                        </div>
+                    </li>
+
                 </ul>
                 <button onclick="openSidebar()" class="md:hidden text-white text-3xl">☰</button>
             </div>
         </div>
+
+
         <div class="relative top-[40%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
             <h1 class="text-4xl font-bold text-white mb-4 poppins">Transforme sua Experiência em Eventos!</h1>
-            <p class="text-xl text-white roboto w-[70%] mx-auto">Descubra, participe e crie eventos incríveis com Eventify. A melhor
+            <p class="text-xl text-white roboto w-[70%] mx-auto">Descubra, participe e crie eventos incríveis com
+                Eventify. A melhor
                 plataforma para você!</p>
         </div>
     </div>
-
 
     <div
         class="-mt-[75px] w-[80%] h-[150px] mx-auto bg-violet-950 rounded-xl shadow-lg flex justify-around items-center px-4">
@@ -130,9 +175,10 @@
 
                 <!-- Os eventos são inseridos via JS -->
             </div>
-            
+
             <div class="text-center mt-10 hidden bg-violet-950 rounded-lg w-1/2 mx-auto p-2" id="event-alert">
-                <p class="text-2xl text-white">Para ver mais eventos, vá para a página <a href="#" class="text-pink-500 hover:text-blue-700 transition duration-300">Eventos</a>!</p>
+                <p class="text-2xl text-white">Para ver mais eventos, vá para a página <a href="#"
+                        class="text-pink-500 hover:text-blue-700 transition duration-300">Eventos</a>!</p>
             </div>
         </div>
     </section>
